@@ -57,10 +57,14 @@ public class NodeTest {
     }
 
     @Test
-    void removeChildByID(){
-        root.addChild(new Node());
-        root.removeChildByID(1);
-        Optional<Node> found = root.getChildByName("removedChild");
+    void removeChildByID() {
+        Node child = new Node("toBeRemoved");
+        root.addChild(child);
+        int id = child.getId();
+
+        root.removeChildByID(id);
+
+        Optional<Node> found = root.getChildByName("toBeRemoved");
         assertTrue(found.isEmpty());
     }
 
@@ -82,5 +86,25 @@ public class NodeTest {
 
         child.setName("newName");
         assertEquals("newName", child.getName());
+    }
+
+    @Test
+    void testToStringTree() {
+        Node root = new Node("root");
+        Node child1 = new Node("child1");
+        Node child2 = new Node("child2");
+        Node grandchild = new Node("grandchild");
+
+        root.addChild(child1);
+        root.addChild(child2);
+        child1.addChild(grandchild);
+
+        String expected =
+                "root\n" +
+                        "  child1\n" +
+                        "    grandchild\n" +
+                        "  child2\n";
+
+        assertEquals(expected, root.toStringTree());
     }
 }
